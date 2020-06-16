@@ -29,7 +29,7 @@ fn main() {
     let mut board = Board::new();
     let mut player1 = Player::new(X);
     let mut player2 = Player::new(O);
-    let mut bot = Bot::new(O);
+    let bot = Bot::new(O);
 
     let mut turn = Turn::First;
 
