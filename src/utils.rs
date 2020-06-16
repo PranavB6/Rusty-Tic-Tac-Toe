@@ -8,7 +8,7 @@ pub enum Token {
 
 #[allow(dead_code)]
 impl Token {
-    fn flip(&self) -> Token {
+    pub fn flip(&self) -> Token {
         match self {
             Token::X => Token::O,
             Token::O => Token::X,
@@ -25,7 +25,7 @@ impl fmt::Display for Token {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Winner {
     Token(Token),
     Tie,
