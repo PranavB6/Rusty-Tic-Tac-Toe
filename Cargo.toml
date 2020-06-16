@@ -1,5 +1,5 @@
 [package]
-name = "rusty-tic-tac-toe"
+name = "tic_tac_toe"
 version = "0.1.0"
 authors = ["Pranav Bodawala <b.pranav.k@gmail.com>"]
 edition = "2018"

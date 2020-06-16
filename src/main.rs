@@ -1,10 +1,4 @@
-mod board;
-mod player;
-mod utils;
-
-use board::Board;
-use player::Player;
-use utils::*;
+use tic_tac_toe::*;
 
 fn main() {
     let mut board = Board::new();
