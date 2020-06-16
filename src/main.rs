@@ -1,5 +1,9 @@
 #![allow(dead_code)]
 
+use console::Term;
+use dialoguer::{theme::ColorfulTheme, Input, Select};
+use std::fmt;
+
 mod board;
 mod bot;
 mod player;
@@ -13,23 +17,22 @@ use utils::*;
 
 fn main() {
     println!("Hello, world!");
+    let term = Term::buffered_stderr();
 
-    // let mut board = Board::new();
-    // board.make_move(1, Token::X).unwrap();
-    // board.make_move(2, Token::O).unwrap();
-    // board.make_move(3, Token::X).unwrap();
-    // board.make_move(4, Token::O).unwrap();
-    // board.make_move(5, Token::O).unwrap();
-    // board.make_move(6, Token::X).unwrap();
-    // board.draw();
-    // let mut bot = Bot::new(Token::X);
+    let player_name: String = Input::new().with_prompt("Name").interact_on(&term).unwrap();
 
-    // bot.choose_move(&board);
+    let difficulties = &["Easy", "Normal", "Hard"];
+    let difficulty = Select::with_theme(&ColorfulTheme::default())
+        .with_prompt("Choose Difficulty")
+        .default(0)
+        .items(&difficulties[..])
+        .interact()
+        .unwrap();
 
+    let player1 = Player::new(Token::X, &player_name);
+    // let player2 = Player::new(O, "player 2");
+    let bot = Bot::new(Token::O, difficulty);
     let mut board = Board::new();
-    let mut player1 = Player::new(X);
-    let mut player2 = Player::new(O);
-    let bot = Bot::new(O);
 
     let mut turn = Turn::First;
 
@@ -39,6 +42,7 @@ fn main() {
         let (pos, token) = match turn {
             Turn::First => player1.choose_move(),
             Turn::Second => bot.choose_move(&board),
+            // Turn::Second => player2.choose_move(),
         };
 
         clear();

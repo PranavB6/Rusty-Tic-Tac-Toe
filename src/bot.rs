@@ -1,19 +1,43 @@
 use crate::board::*;
 use crate::utils::*;
+use rand::seq::SliceRandom;
 
 pub struct Bot {
     token: Token,
+    difficulty: usize,
 }
 
 impl Bot {
-    pub fn new(token: Token) -> Self {
-        Self { token }
+    pub fn new(token: Token, difficulty: usize) -> Self {
+        Self { token, difficulty }
     }
 
     pub fn choose_move(&self, board: &Board) -> (Position, Token) {
-        let (_, opt_pos) = self.minimax(&board, true);
+        let random_pos = || {
+            *board
+                .get_empty_positions()
+                .choose(&mut rand::thread_rng())
+                .unwrap()
+        };
 
-        (opt_pos.unwrap(), self.token.clone())
+        let pos = match &self.difficulty {
+            0 => random_pos(),
+            1 => {
+                if rand::random() {
+                    random_pos()
+                } else {
+                    self.calc_best_pos(board)
+                }
+            }
+            _ => self.calc_best_pos(board),
+        };
+
+        (pos, self.token.clone())
+    }
+
+    pub fn calc_best_pos(&self, board: &Board) -> Position {
+        let (_, opt_pos) = self.minimax(&board, true);
+        opt_pos.unwrap()
     }
 
     pub fn minimax(&self, board: &Board, maximizing: bool) -> (f64, Option<Position>) {
