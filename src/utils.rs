@@ -6,6 +6,7 @@ pub enum Token {
     O,
 }
 
+#[allow(dead_code)]
 impl Token {
     pub fn flip(&self) -> Token {
         match self {
@@ -55,5 +56,5 @@ impl Turn {
 
 pub fn clear() {
     // Clears the terminal
-    print!("\x1B[2J\x1B[1;1H");
+    print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
 }
