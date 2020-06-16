@@ -29,7 +29,7 @@ impl Player {
 
 fn get_input(prompt: &str) -> String {
     print!("{}", prompt);
-    stdout().flush();
+    stdout().flush().unwrap();
 
     let mut input = String::new();
 

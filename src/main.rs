@@ -1,20 +1,15 @@
-#![allow(dead_code)]
-
 mod board;
 mod player;
 mod utils;
 
-use board::*;
-use player::*;
-use utils::Token::*;
+use board::Board;
+use player::Player;
 use utils::*;
 
 fn main() {
-    println!("Hello, world!");
-
     let mut board = Board::new();
-    let mut player1 = Player::new(X);
-    let mut player2 = Player::new(O);
+    let player1 = Player::new(Token::X);
+    let player2 = Player::new(Token::O);
     let mut turn = Turn::First;
 
     clear();
