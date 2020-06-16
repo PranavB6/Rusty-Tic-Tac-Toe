@@ -7,7 +7,7 @@ pub enum Token {
 }
 
 impl Token {
-    fn flip(&self) -> Token {
+    pub fn flip(&self) -> Token {
         match self {
             Token::X => Token::O,
             Token::O => Token::X,

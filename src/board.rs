@@ -70,16 +70,16 @@ impl Board {
         }
     }
 
-    pub fn get_empty_spots(&self) -> Vec<Position> {
-        let mut empty_spots = vec![];
+    pub fn get_empty_positions(&self) -> Vec<Position> {
+        let mut empty_positions = vec![];
 
         for pos in 1..=self.size {
             if !self.has_token(pos) {
-                empty_spots.push(pos);
+                empty_positions.push(pos);
             }
         }
 
-        empty_spots
+        empty_positions
     }
 
     pub fn draw(&self) {
