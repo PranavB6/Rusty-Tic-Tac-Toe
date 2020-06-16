@@ -4,7 +4,7 @@ use crate::utils::*;
 
 pub type Position = i8;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Board {
     board: HashMap<Position, Token>,
     size: Position,
@@ -47,8 +47,8 @@ impl Board {
         self.winner.is_some()
     }
 
-    pub fn winner(&mut self) -> Winner {
-        let winner = self.winner.take();
+    pub fn winner(&self) -> Winner {
+        let winner = self.winner.clone();
 
         winner.expect("Game is not over yet, there is no winner")
     }
@@ -70,6 +70,18 @@ impl Board {
         }
     }
 
+    pub fn get_empty_spots(&self) -> Vec<Position> {
+        let mut empty_spots = vec![];
+
+        for pos in 1..=self.size {
+            if !self.has_token(pos) {
+                empty_spots.push(pos);
+            }
+        }
+
+        empty_spots
+    }
+
     pub fn draw(&self) {
         let token_at = |pos| {
             self.get_token_at(pos)
@@ -88,7 +100,7 @@ impl Board {
         println!("    |    |    ");
     }
 
-    pub fn is_full(&self) -> bool {
+    fn is_full(&self) -> bool {
         for pos in 1..=self.size {
             if !self.has_token(pos) {
                 return false;

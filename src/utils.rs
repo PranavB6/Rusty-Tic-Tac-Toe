@@ -24,7 +24,7 @@ impl fmt::Display for Token {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Winner {
     Token(Token),
     Tie,
