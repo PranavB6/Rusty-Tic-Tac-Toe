@@ -81,6 +81,10 @@ impl Board {
         empty_positions
     }
 
+    pub fn is_empty(&self) -> bool {
+        self.board.borrow().is_empty()
+    }
+
     pub fn draw(&self) {
         let token_at = |pos| {
             self.get_token_at(pos)

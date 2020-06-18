@@ -83,6 +83,10 @@ impl Player for Bot<'_> {
                 .unwrap()
         };
 
+        if self.board.is_empty() {
+            return (random_pos(), self.token.clone());
+        }
+
         let pos = match &self.difficulty {
             Difficulty::Easy => random_pos(),
             Difficulty::Normal => {

@@ -52,6 +52,14 @@ impl Turn {
             Turn::Second => *self = Turn::First,
         }
     }
+
+    pub fn random() -> Turn {
+        if rand::random() {
+            Turn::First
+        } else {
+            Turn::Second
+        }
+    }
 }
 
 pub enum GameMode {

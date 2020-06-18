@@ -21,7 +21,7 @@ fn main() {
         }
     }
 
-    let mut turn = Turn::First;
+    let mut turn = Turn::random();
 
     clear();
     board.draw();
