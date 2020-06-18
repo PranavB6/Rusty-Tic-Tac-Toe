@@ -1,5 +1,3 @@
-use std::io::{stdout, Write};
-
 use crate::utils::*;
 
 pub struct Human {
@@ -30,17 +28,4 @@ impl Player for Human {
             }
         }
     }
-}
-
-fn get_input(prompt: &str) -> String {
-    print!("{}", prompt);
-    stdout().flush().unwrap();
-
-    let mut input = String::new();
-
-    std::io::stdin()
-        .read_line(&mut input)
-        .expect("Error in getting user input");
-
-    input.trim().to_string()
 }

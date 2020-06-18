@@ -1,4 +1,5 @@
 use std::fmt;
+use std::io::{stdout, Write};
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum Token {
@@ -82,4 +83,17 @@ pub type Position = i8;
 pub fn clear() {
     // Clears the terminal
     print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
+}
+
+pub fn get_input(prompt: &str) -> String {
+    print!("{}", prompt);
+    stdout().flush().unwrap();
+
+    let mut input = String::new();
+
+    std::io::stdin()
+        .read_line(&mut input)
+        .expect("Error in getting user input");
+
+    input.trim().to_string()
 }

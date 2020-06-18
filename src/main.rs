@@ -45,6 +45,8 @@ fn main() {
         Winner::Token(token) => println!("{} Wins!", token),
         Winner::Tie => println!("It's a Tie!"),
     }
+
+    get_input("Press enter to close...");
 }
 
 fn choose_game_mode() -> GameMode {
@@ -83,7 +85,7 @@ fn choose_difficulty() -> Difficulty {
 fn choose_token() -> Token {
     let tokens = &["X", "O"];
     let selected_token = Select::with_theme(&ColorfulTheme::default())
-        .with_prompt("Choose Difficulty")
+        .with_prompt("Choose Token")
         .default(0)
         .items(&tokens[..])
         .interact()
