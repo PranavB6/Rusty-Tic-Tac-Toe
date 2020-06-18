@@ -1,23 +1,22 @@
+use std::cell::RefCell;
 use std::collections::hash_map::HashMap;
 
 use crate::utils::*;
 
-pub type Position = i8;
-
 #[derive(Debug, Clone)]
 pub struct Board {
-    board: HashMap<Position, Token>,
+    board: RefCell<HashMap<Position, Token>>,
     size: Position,
-    pub winner: Option<Winner>,
+    winner: RefCell<Option<Winner>>,
     winning_configs: [[Position; 3]; 8],
 }
 
 impl Board {
     pub fn new() -> Self {
         Self {
-            board: HashMap::new(),
+            board: RefCell::new(HashMap::new()),
             size: 9,
-            winner: None,
+            winner: RefCell::new(None),
             winning_configs: [
                 [1, 2, 3],
                 [4, 5, 6],
@@ -31,7 +30,7 @@ impl Board {
         }
     }
 
-    pub fn make_move(&mut self, pos: Position, token: Token) -> Result<(), &'static str> {
+    pub fn make_move(&self, pos: Position, token: Token) -> Result<(), &'static str> {
         if pos <= 0 || pos > self.size {
             Err("Position out of bounds")
         } else if self.has_token(pos) {
@@ -44,18 +43,18 @@ impl Board {
     }
 
     pub fn game_over(&self) -> bool {
-        self.winner.is_some()
+        self.winner.borrow().is_some()
     }
 
     pub fn winner(&self) -> Winner {
-        let winner = self.winner.clone();
+        let winner = self.winner.borrow().clone();
 
         winner.expect("Game is not over yet, there is no winner")
     }
 
-    pub fn check(&mut self) {
+    pub fn check(&self) {
         if self.is_full() {
-            self.winner = Some(Winner::Tie);
+            *self.winner.borrow_mut() = Some(Winner::Tie);
         }
 
         for config in &self.winning_configs {
@@ -65,7 +64,7 @@ impl Board {
                 && self.get_token_at(b) == self.get_token_at(c)
             {
                 let token = self.get_token_at(a).unwrap().clone();
-                self.winner = Some(Winner::from(token));
+                *self.winner.borrow_mut() = Some(Winner::from(token));
             }
         }
     }
@@ -110,16 +109,19 @@ impl Board {
         return true;
     }
 
-    fn get_token_at(&self, pos: Position) -> Option<&Token> {
-        self.board.get(&pos)
+    fn get_token_at(&self, pos: Position) -> Option<Token> {
+        self.board
+            .borrow()
+            .get(&pos)
+            .map(|token_ref| token_ref.clone())
     }
 
     fn has_token(&self, pos: Position) -> bool {
         self.get_token_at(pos).is_some()
     }
 
-    fn insert_token_at(&mut self, pos: Position, token: Token) {
-        let prev_val = self.board.insert(pos, token);
+    fn insert_token_at(&self, pos: Position, token: Token) {
+        let prev_val = self.board.borrow_mut().insert(pos, token);
         assert!(prev_val.is_none(), "There is already a token there!");
     }
 }

@@ -1,7 +1,9 @@
 mod board;
-mod player;
+mod bot;
+mod human;
 mod utils;
 
 pub use board::Board;
-pub use player::Player;
+pub use bot::Bot;
+pub use human::Human;
 pub use utils::*;

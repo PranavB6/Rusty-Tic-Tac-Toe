@@ -1,22 +1,23 @@
 use std::io::{stdout, Write};
 
-use crate::board::Position;
 use crate::utils::*;
 
-pub struct Player {
+pub struct Human {
     token: Token,
     name: String,
 }
 
-impl Player {
+impl Human {
     pub fn new(token: Token, name: &str) -> Self {
         Self {
             token,
             name: name.to_owned(),
         }
     }
+}
 
-    pub fn choose_move(&self) -> (Position, Token) {
+impl Player for Human {
+    fn choose_move(&self) -> (Position, Token) {
         let mut input;
 
         loop {

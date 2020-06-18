@@ -2,41 +2,22 @@ use crate::board::*;
 use crate::utils::*;
 use rand::seq::SliceRandom;
 
-pub struct Bot {
+pub struct Bot<'a> {
     token: Token,
-    difficulty: usize,
+    difficulty: Difficulty,
+    board: &'a Board,
 }
 
-impl Bot {
-    pub fn new(token: Token, difficulty: usize) -> Self {
-        Self { token, difficulty }
+impl<'a> Bot<'a> {
+    pub fn new(token: Token, difficulty: Difficulty, board: &'a Board) -> Self {
+        Self {
+            token,
+            difficulty,
+            board,
+        }
     }
-
-    pub fn choose_move(&self, board: &Board) -> (Position, Token) {
-        let random_pos = || {
-            *board
-                .get_empty_positions()
-                .choose(&mut rand::thread_rng())
-                .unwrap()
-        };
-
-        let pos = match &self.difficulty {
-            0 => random_pos(),
-            1 => {
-                if rand::random() {
-                    random_pos()
-                } else {
-                    self.calc_best_pos(board)
-                }
-            }
-            _ => self.calc_best_pos(board),
-        };
-
-        (pos, self.token.clone())
-    }
-
-    pub fn calc_best_pos(&self, board: &Board) -> Position {
-        let (_, opt_pos) = self.minimax(&board, true);
+    pub fn calc_best_pos(&self) -> Position {
+        let (_, opt_pos) = self.minimax(&self.board, true);
         opt_pos.unwrap()
     }
 
@@ -89,5 +70,31 @@ impl Bot {
 
             return (min_points, Some(best_pos));
         }
+    }
+}
+
+impl Player for Bot<'_> {
+    fn choose_move(&self) -> (Position, Token) {
+        let random_pos = || {
+            *self
+                .board
+                .get_empty_positions()
+                .choose(&mut rand::thread_rng())
+                .unwrap()
+        };
+
+        let pos = match &self.difficulty {
+            Difficulty::Easy => random_pos(),
+            Difficulty::Normal => {
+                if rand::random() {
+                    random_pos()
+                } else {
+                    self.calc_best_pos()
+                }
+            }
+            Difficulty::Impossible => self.calc_best_pos(),
+        };
+
+        (pos, self.token.clone())
     }
 }

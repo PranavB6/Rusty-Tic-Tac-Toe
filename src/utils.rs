@@ -54,6 +54,23 @@ impl Turn {
     }
 }
 
+pub enum GameMode {
+    VsHuman,
+    VsBot,
+}
+
+pub enum Difficulty {
+    Easy,
+    Normal,
+    Impossible,
+}
+
+pub trait Player {
+    fn choose_move(&self) -> (Position, Token);
+}
+
+pub type Position = i8;
+
 pub fn clear() {
     // Clears the terminal
     print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
