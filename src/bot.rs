@@ -40,7 +40,7 @@ impl<'a> Bot<'a> {
             let mut best_pos = empty_positions[0];
 
             for pos in empty_positions {
-                let mut board_clone = board.clone();
+                let board_clone = board.clone();
                 board_clone.make_move(pos, self.token.clone()).unwrap();
 
                 let (points, _) = self.minimax(&board_clone, false);
@@ -57,7 +57,7 @@ impl<'a> Bot<'a> {
             let mut best_pos = empty_positions[0];
 
             for pos in empty_positions {
-                let mut board_clone = board.clone();
+                let board_clone = board.clone();
                 board_clone.make_move(pos, self.token.flip()).unwrap();
 
                 let (points, _) = self.minimax(&board_clone, true);
